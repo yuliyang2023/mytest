@@ -3,6 +3,7 @@
 #include <QPushButton>
 #include <iostream>
 #include <QClipboard>
+#include <QAction>
 
 class MyButton : public QWidget {
 
@@ -20,6 +21,7 @@ void MyButton::fun() {
 MyButton::MyButton(QWidget *parent)
         : QWidget(parent) {
 
+//    this->setGeometry(0, 0, 300, 100);
     auto *quitBtn = new QPushButton("Quit", this);
     quitBtn->setGeometry(50, 40, 75, 30);
 
