@@ -1,5 +1,5 @@
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QMenuBar>
+#include <QMenu>
+#include <QMenuBar>
 #include "simple_menu.h"
 
 SimpleMenu::SimpleMenu(QWidget *parent)

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QApplication>
+#include <QMainWindow>
+#include <QApplication>
 
 class SimpleMenu : public QMainWindow {
 

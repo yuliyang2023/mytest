@@ -1,7 +1,7 @@
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QFrame>
-#include <QtWidgets/QGridLayout>
+#include <QApplication>
+#include <QWidget>
+#include <QFrame>
+#include <QGridLayout>
 
 class Cursors : public QWidget {
 

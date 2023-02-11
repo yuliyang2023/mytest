@@ -1,8 +1,8 @@
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QPushButton>
+#include <QApplication>
+#include <QWidget>
+#include <QPushButton>
 #include <iostream>
-#include <QtGui/QClipboard>
+#include <QClipboard>
 
 class MyButton : public QWidget {
 
