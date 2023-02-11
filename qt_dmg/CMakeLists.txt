@@ -12,6 +12,10 @@ set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
+set(SOURCE
+        pushbutton.cpp
+        )
+
 #https://medium.com/codex/how-to-deploy-your-qt-cross-platform-applications-to-macos-operating-system-using-macdeployqt-281614688dcf
 #https://github.com/shadowsocks/shadowsocks-qt5/issues/669
 if (APPLE)
@@ -23,7 +27,7 @@ if (APPLE)
     set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION})
     set(MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
 #    add_executable(${APP_NAME} MACOSX_BUNDLE ${SOURCE} "icons/shadowsocks-qt5.icns")
-    add_executable(${PROJECT_NAME} MACOSX_BUNDLE pushbutton.cpp)
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCE})
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         message("Debug mode")
     else (CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -36,7 +40,7 @@ if (APPLE)
         )
     endif()
 else()
-    add_executable(${PROJECT_NAME} pushbutton.cpp)
+    add_executable(${PROJECT_NAME} ${SOURCE})
 endif()
 
 if (NOT CMAKE_PREFIX_PATH)
