@@ -1,5 +1,40 @@
 #include "skeleton.h"
 
+commandTab::commandTab(QWidget *parent)
+  : QTabWidget(parent) {
+  this->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(this, SIGNAL(customContextMenuRequested(QPoint)),
+          this, SLOT(showmenu(QPoint)));
+}
+
+commandTab::~commandTab() {
+  qDebug() << __func__ << name;
+}
+
+void commandTab::rename() {
+  AddTabDialog aDialog;
+  aDialog.setWindowTitle(tr("重命名"));
+  if (aDialog.exec()) {
+    const QString newName = aDialog.name();
+    this->setTabText(this->currentIndex(), newName);
+  }
+}
+
+void commandTab::remove() {
+  this->removeTab(this->currentIndex());
+}
+
+void commandTab::showmenu(QPoint pos) {
+  QMenu contextMenu(tr("按钮菜单"), this);
+  QAction action1("重命名", this);
+  QAction action2("删除", this);
+  connect(&action1, SIGNAL(triggered()), this, SLOT(rename()));
+  connect(&action2, SIGNAL(triggered()), this, SLOT(remove()));
+  contextMenu.addAction(&action1);
+  contextMenu.addAction(&action2);
+  contextMenu.exec(mapToGlobal(pos));
+}
+
 commandButton::commandButton(QWidget *parent)
   : QPushButton(parent) {
   this->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -92,6 +127,12 @@ void Skeleton::addTab() {
 
 void Skeleton::on_tabWidget_currentChanged(int index) {
   qDebug() << index;
+  AddTabDialog aDialog;
+  aDialog.setWindowTitle(tr("重命名"));
+  if (aDialog.exec()) {
+    const QString newName = aDialog.name();
+    tabs->setTabText(index, newName);
+  }
 }
 
 Skeleton::Skeleton(QWidget *parent)
@@ -115,8 +156,9 @@ Skeleton::Skeleton(QWidget *parent)
 
   QAction *quit2 = toolbar->addAction(QIcon(quitpix),"退出");
   connect(quit2, &QAction::triggered, qApp, &QApplication::quit);
-  tabs = new QTabWidget(this);
-  connect(tabs, &QTabWidget::currentChanged, this, &Skeleton::on_tabWidget_currentChanged);
+  tabs = new commandTab(this);
+//  connect(tabs, &QTabWidget::currentChanged, this, &Skeleton::on_tabWidget_currentChanged);
+//  connect(tabs, &QTabWidget::tabBarDoubleClicked, this, &Skeleton::on_tabWidget_currentChanged);
   MyWidget* b1 = new MyWidget(this);
   tabs->addTab(b1, "默认分类");
   setCentralWidget(tabs);

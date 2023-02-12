@@ -51,6 +51,23 @@ private slots:
   void deleteButton();
 };
 
+class commandTab : public QTabWidget {
+
+Q_OBJECT
+
+public:
+  commandTab(QWidget *parent = nullptr);
+  ~commandTab();
+  QString name;
+  void SetName(const QString& n) {
+    name = n;
+  }
+private slots:
+  void showmenu(QPoint pos);
+  void rename();
+  void remove();
+};
+
 class MyWidget : public QWidget {
 
 Q_OBJECT
@@ -76,6 +93,6 @@ private slots:
   void on_tabWidget_currentChanged(int index);
 
 private:
-  QTabWidget* tabs;
+  commandTab* tabs;
 };
 
