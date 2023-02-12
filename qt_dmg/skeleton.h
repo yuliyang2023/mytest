@@ -17,6 +17,15 @@
 #include <QTableWidget>
 #include <QHBoxLayout>
 #include <QDebug>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonValue>
+#include <QJsonParseError>
+#include <QFile>
+#include <QDir>
+#include <QMessageBox>
+#include <QClipboard>
 
 #include <iostream>
 
@@ -32,23 +41,32 @@ Q_OBJECT
 public:
   commandButton(QWidget *parent = nullptr);
   ~commandButton();
-  QString name;
-  QString command;
+
   void SetName(const QString& n) {
     name = n;
   }
   void SetCmd(const QString& c) {
     command = c;
   }
+  const QString& GetName() {
+    return name;
+  }
+
+  const QString& GetCmd() {
+    return command;
+  }
   void setFlowLayout(FlowLayout *layout) {
     flowLayout = layout;
   }
 private:
   FlowLayout *flowLayout;
+  QString name;
+  QString command;
 private slots:
   void showmenu(QPoint pos);
   void editButton();
   void deleteButton();
+  void onclicked();
 };
 
 class commandTab : public QTabWidget {
@@ -73,7 +91,7 @@ class MyWidget : public QWidget {
 Q_OBJECT
 
 public:
-  MyWidget(QWidget *parent = nullptr);
+  MyWidget(const QJsonArray& buttons, QWidget *parent = nullptr);
 private:
   FlowLayout *flowLayout;
 private slots:
@@ -94,5 +112,6 @@ private slots:
 
 private:
   commandTab* tabs;
+  QJsonDocument config_doc;
 };
 
