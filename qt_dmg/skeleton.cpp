@@ -1,29 +1,68 @@
-//
-// Created by yuliyang on 2023/2/11.
-//
-
-#include <QToolBar>
-#include <QIcon>
-#include <QAction>
-#include <QMenu>
-#include <QMenuBar>
-#include <QStatusBar>
-#include <QTextEdit>
-#include <QTableWidget>
-#include <QHBoxLayout>
-#include <iostream>
 #include "skeleton.h"
-#include <QPushButton>
+
+commandButton::commandButton(QWidget *parent)
+  : QPushButton(parent) {
+  this->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(this, SIGNAL(customContextMenuRequested(QPoint)),
+          this, SLOT(showmenu(QPoint)));
+}
+
+commandButton::~commandButton() {
+  qDebug() << __func__ << name << "" << command;
+}
+
+void commandButton::editButton() {
+  qDebug() << __func__;
+  AddButtonDialog aDialog;
+  aDialog.setWindowTitle(tr("编辑命令"));
+  aDialog.editcmd(name, command);
+  if (aDialog.exec()) {
+    const QString newName = aDialog.name();
+    const QString newCmd = aDialog.cmd();
+    name = newName;
+    command = newCmd;
+    setText(newName);
+  }
+}
+
+void commandButton::deleteButton() {
+  qDebug() << __func__;
+  setParent(nullptr);
+  flowLayout->removeWidget(this);
+  deleteLater();
+}
+
+void commandButton::showmenu(QPoint pos) {
+  QMenu contextMenu(tr("按钮菜单"), this);
+  QAction action1("修改", this);
+  QAction action2("删除", this);
+  connect(&action1, SIGNAL(triggered()), this, SLOT(editButton()));
+  connect(&action2, SIGNAL(triggered()), this, SLOT(deleteButton()));
+  contextMenu.addAction(&action1);
+  contextMenu.addAction(&action2);
+  contextMenu.exec(mapToGlobal(pos));
+}
 
 void MyWidget::addbutton() {
-  std::cout << __func__ << std::endl;
-  flowLayout->addWidget(new QPushButton(tr("abc")));
+  qDebug() << __func__;
+  AddButtonDialog aDialog;
+  aDialog.setWindowTitle(tr("新增命令"));
+  if (aDialog.exec()) {
+    const QString newName = aDialog.name();
+    const QString newCmd = aDialog.cmd();
+    commandButton* bt = new commandButton();
+    bt->SetName(newName);
+    bt->SetCmd(newCmd);
+    bt->setText(newName);
+    bt->setFlowLayout(flowLayout);
+    flowLayout->addWidget(bt);
+  }
 }
 
 void MyWidget::showmenu(QPoint pos)
 {
-  QMenu contextMenu(tr("Context menu"), this);
-  QAction action1("新建", this);
+  QMenu contextMenu(tr("Tab菜单"), this);
+  QAction action1("新建命令", this);
   connect(&action1, SIGNAL(triggered()), this, SLOT(addbutton()));
   contextMenu.addAction(&action1);
   contextMenu.exec(mapToGlobal(pos));
@@ -35,22 +74,24 @@ MyWidget::MyWidget(QWidget *parent)
   this->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(this, SIGNAL(customContextMenuRequested(QPoint)),
           this, SLOT(showmenu(QPoint)));
-  this->setStyleSheet("background-color:red;");
-  flowLayout->addWidget(new QPushButton(tr("Longer")));
-  flowLayout->addWidget(new QPushButton(tr("Different text")));
-  flowLayout->addWidget(new QPushButton(tr("More text")));
-  flowLayout->addWidget(new QPushButton(tr("Even longer button text")));
   setLayout(flowLayout);
 }
 
 void Skeleton::addTab() {
-  std::cout << "add tab" << std::endl;
-  MyWidget* b3 = new MyWidget(this);
-  tabs->addTab(b3, "apple");
+  qDebug() << "新建文件夹";
+  AddTabDialog aDialog;
+  aDialog.setWindowTitle(tr("新建文件夹"));
+  if (aDialog.exec()) {
+    const QString newName = aDialog.name();
+    if (!newName.isEmpty()) {
+      MyWidget* b = new MyWidget(this);
+      tabs->addTab(b, newName);
+    }
+  }
 }
 
 void Skeleton::on_tabWidget_currentChanged(int index) {
-  std::cout << index << std::endl;
+  qDebug() << index;
 }
 
 Skeleton::Skeleton(QWidget *parent)
@@ -68,17 +109,15 @@ Skeleton::Skeleton(QWidget *parent)
   connect(quit, &QAction::triggered, qApp, &QApplication::quit);
 
   QToolBar *toolbar = addToolBar("main toolbar");
-  toolbar->addAction(QIcon(newpix), "New File", this, &Skeleton::addTab);
-  toolbar->addAction(QIcon(openpix), "Open File");
+  toolbar->addAction(QIcon(newpix), "新建文件夹", this, &Skeleton::addTab);
+  toolbar->addAction(QIcon(openpix), "打开配置文件");
   toolbar->addSeparator();
 
-  QAction *quit2 = toolbar->addAction(QIcon(quitpix),
-                                      "Quit Application");
+  QAction *quit2 = toolbar->addAction(QIcon(quitpix),"退出");
   connect(quit2, &QAction::triggered, qApp, &QApplication::quit);
   tabs = new QTabWidget(this);
   connect(tabs, &QTabWidget::currentChanged, this, &Skeleton::on_tabWidget_currentChanged);
   MyWidget* b1 = new MyWidget(this);
   tabs->addTab(b1, "默认分类");
-  tabs->setStyleSheet("background-color:black;");
   setCentralWidget(tabs);
 }
