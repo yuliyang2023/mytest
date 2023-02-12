@@ -167,15 +167,14 @@ void Skeleton::save() {
   doc.setArray(config);
   QFile file(QDir::homePath() + "/.quickcmd.json");
   if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-    QMessageBox::information(NULL, "Title", "Content");
-    return;
+    statusBar()->showMessage("写入配置文件失败: " + QDir::homePath() + "/.quickcmd.json");
+  } else {
+    QTextStream stream(&file);
+    stream.setCodec("UTF-8");
+    stream << doc.toJson();
   }
-  QTextStream stream(&file);
-  stream.setCodec("UTF-8");
-  stream << doc.toJson();
   file.close();
-  QMessageBox::information(NULL, "保存成功",
-                           "配置文件: " + QDir::homePath() + "/.quickcmd.json");
+  statusBar()->showMessage("保存配置文件成功: " + QDir::homePath() + "/.quickcmd.json");
 }
 
 Skeleton::Skeleton(QWidget *parent)
@@ -184,15 +183,13 @@ Skeleton::Skeleton(QWidget *parent)
   QFile config_file;
   config_file.setFileName(QDir::homePath() + "/.quickcmd.json");
   if(!config_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    QMessageBox::information(0,"打开配置文件失败", config_file.errorString());
-    qDebug() << "打开配置文件失败:" << config_file.errorString();
+    statusBar()->showMessage("打开配置文件失败:" + config_file.errorString());
   } else {
     QString str = config_file.readAll();
     config_file.close();
     config_doc = QJsonDocument::fromJson(str.toUtf8(), &jsonError);
     if (jsonError.error != QJsonParseError::NoError && !config_doc.isNull()) {
-      QMessageBox::information(0,"解析JSON失败", jsonError.errorString());
-      qDebug() << "解析JSON失败:" << jsonError.errorString();
+      statusBar()->showMessage("解析JSON失败:" + jsonError.errorString());
     }
   }
 
@@ -226,4 +223,5 @@ Skeleton::Skeleton(QWidget *parent)
     }
   }
   setCentralWidget(tabs);
+  statusBar()->showMessage("Ready");
 }

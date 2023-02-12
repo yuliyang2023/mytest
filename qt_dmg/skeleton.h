@@ -24,7 +24,6 @@
 #include <QJsonParseError>
 #include <QFile>
 #include <QDir>
-#include <QMessageBox>
 #include <QClipboard>
 
 #include <iostream>
