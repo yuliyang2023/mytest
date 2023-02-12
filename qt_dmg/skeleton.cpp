@@ -2,6 +2,8 @@
 
 commandTab::commandTab(QWidget *parent)
   : QTabWidget(parent) {
+  setStyleSheet(
+    "QTabWidget::tab-bar { alignment: left;}");
   this->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(this, SIGNAL(customContextMenuRequested(QPoint)),
           this, SLOT(showmenu(QPoint)));
@@ -125,13 +127,11 @@ void Skeleton::addTab() {
   }
 }
 
-void Skeleton::on_tabWidget_currentChanged(int index) {
-  qDebug() << index;
-  AddTabDialog aDialog;
-  aDialog.setWindowTitle(tr("重命名"));
-  if (aDialog.exec()) {
-    const QString newName = aDialog.name();
-    tabs->setTabText(index, newName);
+void Skeleton::save() {
+  qDebug() << __func__;
+  for (int i = 0; i < tabs->count(); i++) {
+    auto widget = tabs->widget(i);
+
   }
 }
 
@@ -141,6 +141,7 @@ Skeleton::Skeleton(QWidget *parent)
   QPixmap newpix("new.png");
   QPixmap openpix("open.png");
   QPixmap quitpix("quit.png");
+  QPixmap savepix("save.png");
 
   auto *quit = new QAction("&Quit", this);
 
@@ -153,12 +154,10 @@ Skeleton::Skeleton(QWidget *parent)
   toolbar->addAction(QIcon(newpix), "新建文件夹", this, &Skeleton::addTab);
   toolbar->addAction(QIcon(openpix), "打开配置文件");
   toolbar->addSeparator();
-
+  QAction *save = toolbar->addAction(QIcon(savepix),"保存", this, &Skeleton::save);
   QAction *quit2 = toolbar->addAction(QIcon(quitpix),"退出");
   connect(quit2, &QAction::triggered, qApp, &QApplication::quit);
   tabs = new commandTab(this);
-//  connect(tabs, &QTabWidget::currentChanged, this, &Skeleton::on_tabWidget_currentChanged);
-//  connect(tabs, &QTabWidget::tabBarDoubleClicked, this, &Skeleton::on_tabWidget_currentChanged);
   MyWidget* b1 = new MyWidget(this);
   tabs->addTab(b1, "默认分类");
   setCentralWidget(tabs);

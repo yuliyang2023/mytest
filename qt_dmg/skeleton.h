@@ -88,9 +88,9 @@ Q_OBJECT
 public:
   Skeleton(QWidget *parent = nullptr);
   void addTab();
+  void save();
 
 private slots:
-  void on_tabWidget_currentChanged(int index);
 
 private:
   commandTab* tabs;
