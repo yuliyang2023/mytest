@@ -17,12 +17,7 @@
 
 void MyWidget::addbutton() {
   std::cout << __func__ << std::endl;
-  auto *quitBtn = new QPushButton("b1", this);
-  quitBtn->setStyleSheet("background-color:blue;");
-  quitBtn->setMinimumHeight(40);
-  quitBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  quitBtn->setMaximumWidth(800);
-  quitBtn->setMinimumWidth(300);
+  flowLayout->addWidget(new QPushButton(tr("abc")));
 }
 
 void MyWidget::showmenu(QPoint pos)
@@ -36,21 +31,16 @@ void MyWidget::showmenu(QPoint pos)
 
 MyWidget::MyWidget(QWidget *parent)
   : QWidget(parent) {
+  flowLayout = new FlowLayout;
   this->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(this, SIGNAL(customContextMenuRequested(QPoint)),
           this, SLOT(showmenu(QPoint)));
-  auto *layout = new QHBoxLayout(this);
   this->setStyleSheet("background-color:red;");
-//  auto *quitBtn = new QPushButton("b1", this);
-//  quitBtn->setStyleSheet("background-color:blue;");
-//  quitBtn->setMinimumHeight(40);
-//  quitBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//  quitBtn->setMaximumWidth(800);
-//  quitBtn->setMinimumWidth(300);
-//  layout->addWidget(quitBtn);
-//  layout->setAlignment(quitBtn, Qt::AlignLeft);  //<-- without this, expanding works fine!
-//  layout->setStretchFactor(quitBtn, 1);
-//  setLayout(layout);
+  flowLayout->addWidget(new QPushButton(tr("Longer")));
+  flowLayout->addWidget(new QPushButton(tr("Different text")));
+  flowLayout->addWidget(new QPushButton(tr("More text")));
+  flowLayout->addWidget(new QPushButton(tr("Even longer button text")));
+  setLayout(flowLayout);
 }
 
 void Skeleton::addTab() {

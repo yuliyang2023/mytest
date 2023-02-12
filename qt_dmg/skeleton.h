@@ -6,14 +6,15 @@
 
 #include <QMainWindow>
 #include <QApplication>
-
+#include "flowlayout.h"
 class MyWidget : public QWidget {
 
 Q_OBJECT
 
 public:
   MyWidget(QWidget *parent = nullptr);
-
+private:
+  FlowLayout *flowLayout;
 private slots:
   void showmenu(QPoint pos);
   void addbutton();

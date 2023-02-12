@@ -13,7 +13,7 @@ set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
 set(SOURCE
-        quick.cpp skeleton.cpp)
+        quick.cpp skeleton.cpp flowlayout.cpp)
 
 #https://medium.com/codex/how-to-deploy-your-qt-cross-platform-applications-to-macos-operating-system-using-macdeployqt-281614688dcf
 #https://github.com/shadowsocks/shadowsocks-qt5/issues/669
