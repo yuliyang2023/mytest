@@ -145,6 +145,15 @@ void Skeleton::addTab() {
   }
 }
 
+void Skeleton::mousePressEvent(QMouseEvent *event) {
+  m_nMouseClick_X_Coordinate = event->x();
+  m_nMouseClick_Y_Coordinate = event->y();
+}
+
+void Skeleton::mouseMoveEvent(QMouseEvent *event) {
+  move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
+
 void Skeleton::save() {
   qDebug() << __func__;
   QJsonArray config;
@@ -197,13 +206,6 @@ Skeleton::Skeleton(QWidget *parent)
   QPixmap openpix("open.png");
   QPixmap quitpix("quit.png");
   QPixmap savepix("save.png");
-
-  auto *quit = new QAction("&Quit", this);
-
-  QMenu *file = menuBar()->addMenu("&File");
-  file->addAction(quit);
-
-  connect(quit, &QAction::triggered, qApp, &QApplication::quit);
 
   QToolBar *toolbar = addToolBar("main toolbar");
   toolbar->addAction(QIcon(newpix), "新建文件夹", this, &Skeleton::addTab);
