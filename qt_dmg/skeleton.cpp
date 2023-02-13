@@ -16,6 +16,7 @@ commandTab::~commandTab() {
 void commandTab::rename() {
   AddTabDialog aDialog;
   aDialog.setWindowTitle(tr("重命名"));
+  aDialog.move(aDialog.screen()->availableGeometry().topLeft() + QPoint(20, 20));
   if (aDialog.exec()) {
     const QString newName = aDialog.name();
     this->setTabText(this->currentIndex(), newName);
@@ -59,6 +60,7 @@ void commandButton::editButton() {
   AddButtonDialog aDialog;
   aDialog.setWindowTitle(tr("编辑命令"));
   aDialog.editcmd(name, command);
+  aDialog.move(aDialog.screen()->availableGeometry().topLeft() + QPoint(20, 20));
   if (aDialog.exec()) {
     const QString newName = aDialog.name();
     const QString newCmd = aDialog.cmd();
@@ -90,6 +92,7 @@ void MyWidget::addbutton() {
   qDebug() << __func__;
   AddButtonDialog aDialog;
   aDialog.setWindowTitle(tr("新增命令"));
+  aDialog.move(aDialog.screen()->availableGeometry().topLeft() + QPoint(20, 20));
   if (aDialog.exec()) {
     const QString newName = aDialog.name();
     const QString newCmd = aDialog.cmd();
@@ -135,6 +138,7 @@ void Skeleton::addTab() {
   qDebug() << "新建文件夹";
   AddTabDialog aDialog;
   aDialog.setWindowTitle(tr("新建文件夹"));
+  aDialog.move(aDialog.screen()->availableGeometry().topLeft() + QPoint(20, 20));
   if (aDialog.exec()) {
     const QString newName = aDialog.name();
     if (!newName.isEmpty()) {

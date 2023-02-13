@@ -26,6 +26,7 @@
 #include <QDir>
 #include <QClipboard>
 #include <QMouseEvent>
+#include <QScreen>
 
 #include <iostream>
 
