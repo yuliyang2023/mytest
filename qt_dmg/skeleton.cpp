@@ -139,10 +139,10 @@ void Skeleton::pin() {
   QAction* action = qobject_cast<QAction*>(sender());
   pined = !pined;
   if (pined) {
-    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Window | Qt::FramelessWindowHint);
+    setWindowFlags(Qt::WindowStaysOnTopHint);
     action->setText("unPin");
   } else {
-    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    setWindowFlags(Qt::Window);
     action->setText("Pin");
   }
   if (!isVisible()) {
