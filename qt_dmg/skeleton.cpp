@@ -165,15 +165,6 @@ void Skeleton::addTab() {
   }
 }
 
-void Skeleton::mousePressEvent(QMouseEvent *event) {
-  m_nMouseClick_X_Coordinate = event->x();
-  m_nMouseClick_Y_Coordinate = event->y();
-}
-
-void Skeleton::mouseMoveEvent(QMouseEvent *event) {
-  move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
-}
-
 void Skeleton::save() {
   qDebug() << __func__;
   QJsonArray config;

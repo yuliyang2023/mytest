@@ -113,12 +113,6 @@ public:
 private slots:
 
 private:
-  void mousePressEvent(QMouseEvent *event);
-  void mouseMoveEvent(QMouseEvent *event);
-  int m_nMouseClick_X_Coordinate;
-  int m_nMouseClick_Y_Coordinate;
-
-private:
   commandTab* tabs;
   QJsonDocument config_doc;
   bool pined;
