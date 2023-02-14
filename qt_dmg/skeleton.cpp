@@ -135,6 +135,21 @@ MyWidget::MyWidget(const QJsonArray& buttons, QWidget *parent)
   setLayout(flowLayout);
 }
 
+void Skeleton::pin() {
+  QAction* action = qobject_cast<QAction*>(sender());
+  pined = !pined;
+  if (pined) {
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Window | Qt::FramelessWindowHint);
+    action->setText("unPin");
+  } else {
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    action->setText("Pin");
+  }
+  if (!isVisible()) {
+    setVisible(true);
+  }
+}
+
 void Skeleton::addTab() {
   qDebug() << "新建分类";
   AddTabDialog aDialog;
@@ -192,7 +207,7 @@ void Skeleton::save() {
 }
 
 Skeleton::Skeleton(QWidget *parent)
-  : QMainWindow(parent) {
+  : QMainWindow(parent), pined(false) {
   QJsonParseError jsonError;
   QFile config_file;
   config_file.setFileName(QDir::homePath() + "/.quickcmd.json");
@@ -214,6 +229,7 @@ Skeleton::Skeleton(QWidget *parent)
   QToolBar *toolbar = new QToolBar();
   addToolBar(Qt::ToolBarArea::LeftToolBarArea, toolbar);
   toolbar->setMovable(false);
+  toolbar->addAction(QIcon(newpix), "Pin", this, &Skeleton::pin);
   toolbar->addAction(QIcon(newpix), "New", this, &Skeleton::addTab);
   toolbar->addSeparator();
   QAction *save = toolbar->addAction(QIcon(savepix),"保存", this, &Skeleton::save);

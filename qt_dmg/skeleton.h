@@ -108,6 +108,7 @@ public:
   Skeleton(QWidget *parent = nullptr);
   void addTab();
   void save();
+  void pin();
 
 private slots:
 
@@ -120,5 +121,6 @@ private:
 private:
   commandTab* tabs;
   QJsonDocument config_doc;
+  bool pined;
 };
 
