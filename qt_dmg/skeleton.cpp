@@ -135,9 +135,9 @@ MyWidget::MyWidget(const QJsonArray& buttons, QWidget *parent)
 }
 
 void Skeleton::addTab() {
-  qDebug() << "新建文件夹";
+  qDebug() << "新建分类";
   AddTabDialog aDialog;
-  aDialog.setWindowTitle(tr("新建文件夹"));
+  aDialog.setWindowTitle(tr("新建分类"));
   aDialog.move(aDialog.screen()->availableGeometry().topLeft() + QPoint(20, 20));
   if (aDialog.exec()) {
     const QString newName = aDialog.name();
@@ -180,14 +180,14 @@ void Skeleton::save() {
   doc.setArray(config);
   QFile file(QDir::homePath() + "/.quickcmd.json");
   if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-    statusBar()->showMessage("写入配置文件失败: " + QDir::homePath() + "/.quickcmd.json");
+    statusBar()->showMessage("写入配置文件失败: " + QDir::homePath() + "/.quickcmd.json", 2000);
   } else {
     QTextStream stream(&file);
     stream.setCodec("UTF-8");
     stream << doc.toJson();
   }
   file.close();
-  statusBar()->showMessage("保存配置文件成功: " + QDir::homePath() + "/.quickcmd.json");
+  statusBar()->showMessage("保存配置文件成功: " + QDir::homePath() + "/.quickcmd.json", 2000);
 }
 
 Skeleton::Skeleton(QWidget *parent)
@@ -196,13 +196,13 @@ Skeleton::Skeleton(QWidget *parent)
   QFile config_file;
   config_file.setFileName(QDir::homePath() + "/.quickcmd.json");
   if(!config_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    statusBar()->showMessage("打开配置文件失败:" + config_file.errorString());
+    statusBar()->showMessage("打开配置文件失败:" + config_file.errorString(), 2000);
   } else {
     QString str = config_file.readAll();
     config_file.close();
     config_doc = QJsonDocument::fromJson(str.toUtf8(), &jsonError);
     if (jsonError.error != QJsonParseError::NoError && !config_doc.isNull()) {
-      statusBar()->showMessage("解析JSON失败:" + jsonError.errorString());
+      statusBar()->showMessage("解析JSON失败:" + jsonError.errorString(), 2000);
     }
   }
 
@@ -210,9 +210,10 @@ Skeleton::Skeleton(QWidget *parent)
   QPixmap openpix("open.png");
   QPixmap quitpix("quit.png");
   QPixmap savepix("save.png");
-
-  QToolBar *toolbar = addToolBar("main toolbar");
-  toolbar->addAction(QIcon(newpix), "新建文件夹", this, &Skeleton::addTab);
+  QToolBar *toolbar = new QToolBar();
+  addToolBar(Qt::ToolBarArea::LeftToolBarArea, toolbar);
+  toolbar->setMovable(false);
+  toolbar->addAction(QIcon(newpix), "New", this, &Skeleton::addTab);
   toolbar->addSeparator();
   QAction *save = toolbar->addAction(QIcon(savepix),"保存", this, &Skeleton::save);
   QAction *quit2 = toolbar->addAction(QIcon(quitpix),"退出");
@@ -229,5 +230,5 @@ Skeleton::Skeleton(QWidget *parent)
     }
   }
   setCentralWidget(tabs);
-  statusBar()->showMessage("Ready");
+  statusBar()->showMessage("Ready", 2000);
 }
