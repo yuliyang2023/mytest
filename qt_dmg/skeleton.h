@@ -27,6 +27,7 @@
 #include <QClipboard>
 #include <QMouseEvent>
 #include <QScreen>
+#include <QDir>
 
 #include <iostream>
 
@@ -116,5 +117,7 @@ private:
   commandTab* tabs;
   QJsonDocument config_doc;
   bool pined;
+  QString dir;
+  QString config_path;
 };
 
