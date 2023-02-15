@@ -97,7 +97,7 @@ void MyWidget::addbutton() {
   if (aDialog.exec()) {
     const QString newName = aDialog.name();
     const QString newCmd = aDialog.cmd();
-    commandButton* bt = new commandButton();
+    commandButton* bt = new commandButton(this);
     bt->SetName(newName);
     bt->SetCmd(newCmd);
     bt->setText(newName);
@@ -117,14 +117,14 @@ void MyWidget::showmenu(QPoint pos)
 
 MyWidget::MyWidget(const QJsonArray& buttons, QWidget *parent)
   : QWidget(parent) {
-  flowLayout = new FlowLayout;
+  flowLayout = new FlowLayout(this);
   this->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(this, SIGNAL(customContextMenuRequested(QPoint)),
           this, SLOT(showmenu(QPoint)));
   for (int i=0; i < buttons.count(); i++) {
     QJsonObject bt = buttons.at(i).toObject();
     for (auto iter = bt.begin(); iter != bt.end(); iter++) {
-      commandButton* bt = new commandButton();
+      commandButton* bt = new commandButton(this);
       bt->SetName(iter.key());
       bt->SetCmd(iter.value().toString());
       bt->setText(iter.key());
@@ -222,7 +222,7 @@ Skeleton::Skeleton(QWidget *parent)
   QPixmap openpix("open.png");
   QPixmap quitpix("quit.png");
   QPixmap savepix("save.png");
-  QToolBar *toolbar = new QToolBar();
+  QToolBar *toolbar = new QToolBar(this);
   addToolBar(Qt::ToolBarArea::LeftToolBarArea, toolbar);
   toolbar->setMovable(false);
   toolbar->addAction(QIcon(newpix), "Pin", this, &Skeleton::pin);
