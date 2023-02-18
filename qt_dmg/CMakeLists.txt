@@ -19,6 +19,9 @@ set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
+set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
+add_subdirectory(singleapplication)
+
 set(SOURCE
   quick.cpp skeleton.cpp flowlayout.cpp addbuttondialog.cpp addtabdialog.cpp)
 
@@ -69,4 +72,4 @@ if (NOT CMAKE_PREFIX_PATH)
 endif ()
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
-target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED})
+target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED} SingleApplication::SingleApplication)
