@@ -16,14 +16,14 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(QT_VERSION 5)
-set(REQUIRED_LIBS Core Gui Widgets)
-set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
+set(REQUIRED_LIBS Core Gui Widgets Network)
+set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network)
 
 include_directories(./QSsh/include)
 link_directories(./QSsh/lib)
 
 set(SOURCE
-	main.cpp shell.cpp argumentscollector.cpp)
+	main.cpp shell.cpp argumentscollector.cpp console.cpp)
 
 #https://medium.com/codex/how-to-deploy-your-qt-cross-platform-applications-to-macos-operating-system-using-macdeployqt-281614688dcf
 #https://github.com/shadowsocks/shadowsocks-qt5/issues/669
@@ -50,18 +50,18 @@ if (APPLE)
 	endif()
 elseif(WIN32)
 	add_executable(${PROJECT_NAME} ${SOURCE})
-	set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE true)
+#	set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE true)
 	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 		message("WIN32 Debug mode")
 	else (CMAKE_BUILD_TYPE STREQUAL "Release")
 		message("WIN32 Release mode")
-		add_custom_command(
-			TARGET ${PROJECT_NAME}
-			POST_BUILD
-			COMMAND D:\\Qt\\Qt5.14.2\\5.14.2\\mingw73_64\\bin\\windeployqt.exe ${PROJECT_NAME}.exe
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
-		)
 	endif()
+	add_custom_command(
+		TARGET ${PROJECT_NAME}
+		POST_BUILD
+		COMMAND D:\\Qt\\Qt5.14.2\\5.14.2\\mingw73_64\\bin\\windeployqt.exe ${PROJECT_NAME}.exe
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
+	)
 else()
 	add_executable(${PROJECT_NAME} ${SOURCE})
 endif()
